@@ -1,35 +1,41 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { TodoContext } from '../TodoContext';
 import './TodoForm.css';
 import { useForm } from "react-hook-form";
-import { FaClipboardList } from "react-icons/fa";
-import { FaWindowClose } from "react-icons/fa";
+import { FaClipboardList, FaWindowClose, FaExclamationCircle } from "react-icons/fa";
 
 function TodoForm() {
   //const [newTodoValue, setNewTodoValue] = React.useState('');
+
+  const [errorMessage, setErrorMessage] = useState(false)
+
   const {
     addTodo,
     setOpenModal,
   } = React.useContext(TodoContext);
 
   const {
-    register,
-    formState: { errors },
     handleSubmit
   } = useForm();
   
-  /* const onChange = (event) => {
-    setNewTodoValue(event.target.value);
-  }; */
+  const onChange = (event) => {
+    if (event.target.value.length > 0){
+      setErrorMessage(false)
+    }
+  };
+
   const onCancel = () => {
     setOpenModal(false);
   };
 
-  const onSubmit = (data, event) => {
-    event.preventDefault();
-    addTodo(data);
-    setOpenModal(false);
-    event.target.reset()
+ 
+  const onSubmit = (data) => {
+    if (data.toDo){ 
+      addTodo(data.toDo);
+      setOpenModal(false);
+      return;
+    }
+    setErrorMessage(true);
   };
 
   return (
@@ -37,18 +43,12 @@ function TodoForm() {
       <label>Escribe tu nuevo TODO</label>
       <textarea
        // value={newTodoValue}
-       // onChange={onChange}
-        placeholder="Cortar la cebolla oara el almuerzo"
+        onChange={onChange}
+        placeholder= "Cortar la cebolla oara el almuerzo"
         name='toDo'
-        {...register("toDo", {
-          required: {
-            value: true,
-            message: "Nombre obligatorio",
-          },
-        })}
       />
-      <span className="text-danger text-small d-block mb-2">
-        {errors?.username?.message}
+      <span className="errorMessage">
+        { errorMessage ? "❗ No puedes enviar info vacio"  : " " }
       </span>
       <div className="TodoForm-buttonContainer">
         <button
