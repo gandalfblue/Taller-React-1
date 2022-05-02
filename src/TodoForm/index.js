@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import { TodoContext } from '../TodoContext';
 import './TodoForm.css';
 import { useForm } from "react-hook-form";
-import { FaClipboardList, FaWindowClose, FaExclamationCircle } from "react-icons/fa";
+import { FaClipboardList, FaWindowClose } from "react-icons/fa";
 
 function TodoForm() {
-  //const [newTodoValue, setNewTodoValue] = React.useState('');
 
   const [errorMessage, setErrorMessage] = useState(false)
 
@@ -42,7 +41,6 @@ function TodoForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Escribe tu nuevo TODO</label>
       <textarea
-       // value={newTodoValue}
         onChange={onChange}
         placeholder= "Cortar la cebolla oara el almuerzo"
         name='toDo'
